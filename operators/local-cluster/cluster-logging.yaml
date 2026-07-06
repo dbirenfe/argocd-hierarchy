@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-cluster-cluster-logging
+  namespace: openshift-gitops
+  labels:
+    cluster: local-cluster
+    tier: operator
+    operator: cluster-logging
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: http://git-server.git-server.svc.cluster.local:8080/argocd-hierarchy.git
+    targetRevision: main
+    path: resources/cluster-logging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

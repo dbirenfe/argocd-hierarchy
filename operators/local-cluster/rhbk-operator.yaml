@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-cluster-rhbk-operator
+  namespace: openshift-gitops
+  labels:
+    cluster: local-cluster
+    tier: operator
+    operator: rhbk-operator
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: http://git-server.git-server.svc.cluster.local:8080/argocd-hierarchy.git
+    targetRevision: main
+    path: resources/rhbk-operator
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: keycloak
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
