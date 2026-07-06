@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: openshift-gitops
+  labels:
+    hierarchy/tier: operator
+    hierarchy/operator: cert-manager
+spec:
+  project: cluster-operators
+  source:
+    repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
+    targetRevision: main
+    path: resources/cert-manager
+  destination:
+    server: CLUSTER_SERVER_PLACEHOLDER
+    namespace: cert-manager-operator
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

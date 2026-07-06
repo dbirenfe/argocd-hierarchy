@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namePrefix: local-cluster-
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: Application
+    patch: |
+      - op: replace
+        path: /spec/destination/server
+        value: https://kubernetes.default.svc
+      - op: add
+        path: /metadata/labels/hierarchy~1cluster
+        value: local-cluster

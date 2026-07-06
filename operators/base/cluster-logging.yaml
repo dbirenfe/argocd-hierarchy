@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-logging
+  namespace: openshift-gitops
+  labels:
+    hierarchy/tier: operator
+    hierarchy/operator: cluster-logging
+spec:
+  project: cluster-operators
+  source:
+    repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
+    targetRevision: main
+    path: resources/cluster-logging
+  destination:
+    server: CLUSTER_SERVER_PLACEHOLDER
+    namespace: openshift-logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

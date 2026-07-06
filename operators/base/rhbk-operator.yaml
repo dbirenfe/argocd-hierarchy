@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rhbk-operator
+  namespace: openshift-gitops
+  labels:
+    hierarchy/tier: operator
+    hierarchy/operator: rhbk-operator
+spec:
+  project: cluster-operators
+  source:
+    repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
+    targetRevision: main
+    path: resources/rhbk-operator
+  destination:
+    server: CLUSTER_SERVER_PLACEHOLDER
+    namespace: keycloak
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

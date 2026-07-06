@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crunchy-postgres
+  namespace: openshift-gitops
+  labels:
+    hierarchy/tier: operator
+    hierarchy/operator: crunchy-postgres
+spec:
+  project: cluster-operators
+  source:
+    repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
+    targetRevision: main
+    path: resources/crunchy-postgres
+  destination:
+    server: CLUSTER_SERVER_PLACEHOLDER
+    namespace: openshift-operators
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
