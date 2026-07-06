@@ -1,22 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: local-cluster-operators
+  name: staging-cluster-cluster-logging
   namespace: openshift-gitops
   labels:
-    cluster: local-cluster
-    tier: cluster
+    cluster: staging-cluster
+    tier: operator
+    operator: cluster-logging
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: clusters
+  project: operators
   source:
     repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
     targetRevision: main
-    path: operators/local-cluster
+    path: resources/cluster-logging
   destination:
-    server: https://kubernetes.default.svc
-    namespace: openshift-gitops
+    server: https://api.staging-cluster.example.com:6443
+    namespace: openshift-logging
   syncPolicy:
     automated:
       prune: true

@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: clusters
+  namespace: openshift-gitops
+spec:
+  description: Cluster-level apps (one per managed cluster)
+  sourceRepos:
+    - https://github.com/dbirenfe/argocd-hierarchy.git
+  destinations:
+    - namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: operators
+  namespace: openshift-gitops
+spec:
+  description: Operator-level apps (one per operator per cluster)
+  sourceRepos:
+    - https://github.com/dbirenfe/argocd-hierarchy.git
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+    - namespace: '*'
+      server: https://api.staging-cluster.example.com:6443
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
