@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rhsso-operator
+  name: odf-operator
   namespace: openshift-gitops
   labels:
     hierarchy/tier: operator
-    hierarchy/operator: rhsso-operator
+    hierarchy/operator: odf-operator
 spec:
   project: cluster-operators
   source:
     repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
     targetRevision: main
-    path: resources/rhsso-operator
+    path: resources/odf-operator
   destination:
-    server: CLUSTER_SERVER_PLACEHOLDER
-    namespace: rhsso
+    server: CLUSTER_SERVER
+    namespace: openshift-storage
   syncPolicy:
     automated:
       prune: true

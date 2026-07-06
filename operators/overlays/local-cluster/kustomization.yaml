@@ -3,8 +3,14 @@ kind: Kustomization
 
 namePrefix: local-cluster-
 
-resources:
-  - ../../base
+components:
+  - ../../components/cert-manager
+  - ../../components/openshift-gitops
+  - ../../components/cluster-logging
+  - ../../components/crunchy-postgres
+  - ../../components/rhbk-operator
+  - ../../components/odf-operator
+  - ../../components/rhsso-operator
 
 patches:
   - target:

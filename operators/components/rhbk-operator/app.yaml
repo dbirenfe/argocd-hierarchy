@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: odf-operator
+  name: rhbk-operator
   namespace: openshift-gitops
   labels:
     hierarchy/tier: operator
-    hierarchy/operator: odf-operator
+    hierarchy/operator: rhbk-operator
 spec:
   project: cluster-operators
   source:
     repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
     targetRevision: main
-    path: resources/odf-operator
+    path: resources/rhbk-operator
   destination:
-    server: CLUSTER_SERVER_PLACEHOLDER
-    namespace: openshift-storage
+    server: CLUSTER_SERVER
+    namespace: keycloak
   syncPolicy:
     automated:
       prune: true

@@ -13,7 +13,7 @@ spec:
     targetRevision: main
     path: resources/cert-manager
   destination:
-    server: CLUSTER_SERVER_PLACEHOLDER
+    server: CLUSTER_SERVER
     namespace: cert-manager-operator
   syncPolicy:
     automated:

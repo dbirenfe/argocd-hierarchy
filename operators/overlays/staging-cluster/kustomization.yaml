@@ -3,8 +3,10 @@ kind: Kustomization
 
 namePrefix: staging-cluster-
 
-resources:
-  - ../../base
+# Staging only gets cert-manager and logging
+components:
+  - ../../components/cert-manager
+  - ../../components/cluster-logging
 
 patches:
   - target:
