@@ -1,0 +1,61 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-operators
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - list:
+              elements:
+                - cluster: local-cluster
+                  server: https://kubernetes.default.svc
+                - cluster: staging-cluster
+                  server: https://api.staging-cluster.example.com:6443
+          - list:
+              elements:
+                - operator: cert-manager
+                  namespace: cert-manager-operator
+                  path: resources/cert-manager
+                - operator: openshift-gitops
+                  namespace: openshift-gitops-operator
+                  path: resources/openshift-gitops
+                - operator: cluster-logging
+                  namespace: openshift-logging
+                  path: resources/cluster-logging
+                - operator: crunchy-postgres
+                  namespace: openshift-operators
+                  path: resources/crunchy-postgres
+                - operator: rhbk-operator
+                  namespace: keycloak
+                  path: resources/rhbk-operator
+                - operator: odf-operator
+                  namespace: openshift-storage
+                  path: resources/odf-operator
+                - operator: rhsso-operator
+                  namespace: rhsso
+                  path: resources/rhsso-operator
+  template:
+    metadata:
+      name: '{{.cluster}}-{{.operator}}'
+      namespace: openshift-gitops
+      labels:
+        hierarchy/tier: operator
+        hierarchy/cluster: '{{.cluster}}'
+        hierarchy/operator: '{{.operator}}'
+    spec:
+      project: operators
+      source:
+        repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
+        targetRevision: main
+        path: '{{.path}}'
+      destination:
+        server: '{{.server}}'
+        namespace: '{{.namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
