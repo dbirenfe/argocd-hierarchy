@@ -3,14 +3,9 @@ kind: Kustomization
 
 namePrefix: local-cluster-
 
-components:
-  - ../../components/cert-manager
-  - ../../components/openshift-gitops
-  - ../../components/cluster-logging
-  - ../../components/crunchy-postgres
-  - ../../components/rhbk-operator
-  - ../../components/odf-operator
-  - ../../components/rhsso-operator
+# Inherit ALL default operators
+resources:
+  - ../../defaults
 
 patches:
   - target:

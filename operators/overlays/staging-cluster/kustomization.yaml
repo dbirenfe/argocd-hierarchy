@@ -3,12 +3,12 @@ kind: Kustomization
 
 namePrefix: staging-cluster-
 
-# Staging only gets cert-manager and logging
-components:
-  - ../../components/cert-manager
-  - ../../components/cluster-logging
+# Inherit ALL default operators
+resources:
+  - ../../defaults
 
 patches:
+  # Set destination for all apps
   - target:
       kind: Application
     patch: |
@@ -18,3 +18,58 @@ patches:
       - op: add
         path: /metadata/labels/hierarchy~1cluster
         value: staging-cluster
+
+  # ============================================================
+  # EXCLUDE operators this cluster does NOT need:
+  # ============================================================
+  - target:
+      kind: Application
+      name: crunchy-postgres
+    patch: |
+      $patch: delete
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: crunchy-postgres
+  - target:
+      kind: Application
+      name: odf-operator
+    patch: |
+      $patch: delete
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: odf-operator
+  - target:
+      kind: Application
+      name: rhbk-operator
+    patch: |
+      $patch: delete
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: rhbk-operator
+  - target:
+      kind: Application
+      name: openshift-gitops
+    patch: |
+      $patch: delete
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: openshift-gitops
+  - target:
+      kind: Application
+      name: rhsso-operator
+    patch: |
+      $patch: delete
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: rhsso-operator
+
+# ============================================================
+# EXTRA operators only for this cluster (not in defaults):
+# ============================================================
+# components:
+#   - ../../components/some-staging-only-operator

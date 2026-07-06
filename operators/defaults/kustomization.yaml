@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# ============================================================
+# DEFAULT OPERATORS - All clusters get these unless excluded
+# ============================================================
+# To add a new operator for ALL clusters, add it here.
+# To exclude an operator from a specific cluster, use a
+# $patch: delete in that cluster's overlay.
+# ============================================================
+
+components:
+  - ../components/cert-manager
+  - ../components/openshift-gitops
+  - ../components/cluster-logging
+  - ../components/crunchy-postgres
+  - ../components/rhbk-operator
+  - ../components/odf-operator
+  - ../components/rhsso-operator
