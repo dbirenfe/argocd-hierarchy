@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://git-server.git-server.svc.cluster.local:8080/argocd-hierarchy.git
+    repoURL: https://github.com/dbirenfe/argocd-hierarchy.git
     targetRevision: main
     path: clusters
   destination:
